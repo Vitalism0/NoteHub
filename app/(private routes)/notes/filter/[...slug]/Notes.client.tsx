@@ -5,7 +5,7 @@ import Pagination from "@/components/Pagination/Pagination";
 import NoteList from "@/components/NoteList/NoteList";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { fetchNotes } from "@/lib/api";
+import { fetchNotes } from "@/lib/api/clientApi";
 import { useDebounce } from "use-debounce";
 
 import Link from "next/link";
@@ -19,7 +19,7 @@ export default function NotesClientPage({ tag }: { tag?: string }) {
 
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: ["notes", debouncedQuery, page, perPage, tag ?? "all"],
-    queryFn: () => fetchNotes({ query: debouncedQuery, page, perPage, tag }),
+    queryFn: () => fetchNotes({ search: debouncedQuery, page, perPage, tag }),
     placeholderData: keepPreviousData,
   });
   const handleSearchChange = (value: string) => {

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -40,14 +41,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable}  antialiased`}>
+      <body className={`${roboto.variable} antialiased`}>
         <TanStackProvider>
-          <Header />
-          <div>
-            {children}
-            {modal}
-          </div>
-          <Footer />
+          <AuthProvider>
+            <Header />
+            <div>
+              {children}
+              {modal}
+            </div>
+            <Footer />
+          </AuthProvider>
         </TanStackProvider>
       </body>
     </html>

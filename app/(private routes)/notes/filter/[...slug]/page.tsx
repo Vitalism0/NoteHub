@@ -1,5 +1,5 @@
-import { fetchNotes } from "@/lib/api";
-import NotesClientPage from "@/app/notes/filter/[...slug]/Notes.client";
+import { fetchNotes } from "@/lib/api/serverApi";
+import NotesClientPage from "./Notes.client";
 import {
   dehydrate,
   HydrationBoundary,
@@ -62,7 +62,7 @@ export default async function NotesByTagPage({ params }: Props) {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["notes", query, page, perPage, tag],
-    queryFn: () => fetchNotes({ query, page, perPage, tag }),
+    queryFn: () => fetchNotes({ search: query, page, perPage, tag }),
   });
 
   return (
