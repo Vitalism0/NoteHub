@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NoteHub (09-auth) 🗒️✨
 
-## Getting Started
+A modern notes app built with **Next.js (App Router)** featuring **cookie-based authentication**, **protected routes**, and a fast **SSR + CSR** data layer powered by **TanStack Query**.
 
-First, run the development server:
+**🔗 Repo:** https://github.com/Vitalism0/09-auth  
+**📚 API Docs:** https://notehub-api.goit.study/docs  
+**🌍 Live Demo:** _add your Vercel link here_
 
+---
+
+## 🚀 What you can do
+✅ **Auth & Session**
+- Sign up / Sign in  
+- Session check on navigation  
+- Logout (clears auth cookies + resets state)
+
+✅ **Profile**
+- View profile (`/profile`)
+- Edit username (`/profile/edit`)
+
+✅ **Notes**
+- Browse notes with **pagination** (12 per page)
+- **Search** notes (debounced)
+- **Filter by tag**
+- Open note details (`/notes/[id]`)
+- Preview note in a **modal** (intercepting routes)
+- Create note + **draft saved** in localStorage (Zustand persist)
+- Delete notes
+
+---
+
+## 🧠 How it works (quick)
+- **Route protection:** `proxy.ts` redirects users based on cookies  
+  - guest → private routes ⇒ `/sign-in`
+  - logged-in → auth routes ⇒ `/profile`
+- **SSR + hydration:** server prefetch with `serverApi` → client reuse cache with `HydrationBoundary`
+- **API separation:**
+  - `lib/api/clientApi.ts` → client components
+  - `lib/api/serverApi.ts` → server components (adds cookies)
+
+---
+
+## 🧰 Tech Stack
+**Next.js • TypeScript • Axios • TanStack Query • Zustand • CSS Modules**
+
+---
+
+## ⚙️ Setup
+### 1) Install
 ```bash
+npm install
+
+Environment
+
+Create .env:
+
+NEXT_PUBLIC_API_URL=http://localhost:3000
+
+
+For Vercel:
+
+NEXT_PUBLIC_API_URL=https://YOUR-VERCEL-DOMAIN.vercel.app
+
+3) Run
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open: http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🗺️ Useful routes
 
-## Learn More
+/sign-in · /sign-up
 
-To learn more about Next.js, take a look at the following resources:
+/profile · /profile/edit
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+/notes/filter/all
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+/notes/action/create
