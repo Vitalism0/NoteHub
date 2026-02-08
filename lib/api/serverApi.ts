@@ -1,4 +1,5 @@
-import type { AxiosRequestConfig } from "axios";
+// lib/api/serverApi.ts
+import type { AxiosRequestConfig, AxiosResponse } from "axios";
 import { cookies } from "next/headers";
 
 import { api } from "./api";
@@ -16,7 +17,8 @@ function normalizeNotesResponse(data: NotesApiResponse) {
 }
 
 async function buildCookieHeader(): Promise<string> {
-  const store = await cookies();
+  // працює і якщо cookies() sync, і якщо async
+  const store = await Promise.resolve(cookies());
   return store
     .getAll()
     .map((c) => `${c.name}=${c.value}`)
@@ -46,7 +48,6 @@ export async function fetchNoteById(id: Note["id"]) {
     `/notes/${id}`,
     withCookies(cookieHeader),
   );
-
   return data;
 }
 
@@ -58,15 +59,18 @@ export async function getMe() {
   return data;
 }
 
-// Auth (SSR)
-export async function checkSession(): Promise<User | null> {
-  const cookieHeader = await buildCookieHeader();
+export type SessionResponse =
+  | User
+  | ""
+  | null
+  | undefined
+  | { success: boolean };
 
-  const { data } = await api.get<User | "" | null | undefined>(
-    "/auth/session",
-    withCookies(cookieHeader),
-  );
+// Auth (SSR) — ПОВЕРТАЄМО ПОВНИЙ AxiosResponse
+export async function checkSession(
+  cookieHeader?: string,
+): Promise<AxiosResponse<SessionResponse>> {
+  const header = cookieHeader ?? (await buildCookieHeader());
 
-  if (!data || typeof data !== "object") return null;
-  return data as User;
+  return await api.get<SessionResponse>("/auth/session", withCookies(header));
 }

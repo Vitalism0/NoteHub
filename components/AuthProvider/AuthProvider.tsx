@@ -44,8 +44,9 @@ export default function AuthProvider({
         if (user) {
           setUser(user);
 
+          // ВАЖЛИВО: за вимогами з фідбеку — редірект з auth route на "/"
           if (isAuthRoute) {
-            router.replace("/profile");
+            router.replace("/");
             router.refresh();
           }
 
@@ -53,7 +54,7 @@ export default function AuthProvider({
           return;
         }
 
-        // user == null → неавторизований
+        // user == null => не авторизований
         clearIsAuthenticated();
 
         if (isPrivateRoute) {
@@ -85,14 +86,7 @@ export default function AuthProvider({
     return () => {
       alive = false;
     };
-  }, [
-    isPrivateRoute,
-    isAuthRoute,
-    pathname,
-    router,
-    setUser,
-    clearIsAuthenticated,
-  ]);
+  }, [isPrivateRoute, isAuthRoute, router, setUser, clearIsAuthenticated]);
 
   if (loading) return <div style={{ padding: 24 }}>Loading...</div>;
   if (isPrivateRoute && !isAuthenticated) return null;
