@@ -4,7 +4,7 @@ A modern notes app built with **Next.js (App Router)** featuring **cookie-based 
 
 **🔗 Repo:** https://github.com/Vitalism0/09-auth  
 **📚 API Docs:** https://notehub-api.goit.study/docs  
-**🌍 Live Demo:** _add your Vercel link here_
+**🌍 Live Demo:** _09-auth-flax-two.vercel.app_
 
 ---
 
